@@ -1,6 +1,8 @@
 package ru.track;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 
 
 /**
@@ -40,7 +42,28 @@ public class CountWords {
      * @return - целое число - сумма всех чисел из файла
      */
     public long countNumbers(File file) throws Exception {
-        return 0;
+        long result = 0;
+        FileReader fileReader = new FileReader(file);
+        BufferedReader bufferedReader = new BufferedReader(fileReader);
+        String line = null;
+        while ((line = bufferedReader.readLine()) != null) {
+            if (line == null) {
+                break;
+            }
+            try {
+                result += Integer.parseInt(line);
+            } catch (NumberFormatException exception) {
+                //
+            }
+        }
+        return result;
+    }
+
+    public static void main(String[] args) throws Exception {
+        CountWords cw = new CountWords("");
+        File file = new File("/Users/yunysovilya/TechnoTrack/1sem/track18-spring/L2-objects/words.txt");
+        System.out.println(cw.concatWords(file));
+        System.out.println(cw.countNumbers(file));
     }
 
 
@@ -52,7 +75,24 @@ public class CountWords {
      * @return - результирующая строка
      */
     public String concatWords(File file) throws Exception {
-        return null;
+        StringBuilder stringBuilder = new StringBuilder("");
+        FileReader fileReader = new FileReader(file);
+        BufferedReader bufferedReader = new BufferedReader(fileReader);
+        long num = 0;
+        String line = null;
+        while ((line = bufferedReader.readLine()) != null) {
+            if (line == null) {
+                break;
+            }
+            try {
+                num += Integer.parseInt(line);
+            } catch (NumberFormatException exception) {
+                if (!(line.equals(this.skipWord))) {
+                    stringBuilder.append(line + ' ');
+                }
+            }
+        }
+        return stringBuilder.toString();
     }
 
 }
