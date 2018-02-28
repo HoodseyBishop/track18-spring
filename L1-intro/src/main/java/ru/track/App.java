@@ -17,9 +17,9 @@ import com.mashape.unirest.http.Unirest;
 public class App {
 
     public static final String URL = "http://guarded-mesa-31536.herokuapp.com/track";
-    public static final String FIELD_NAME = "Ilya";
-    public static final String FIELD_GITHUB = "HoodseyBishop";
-    public static final String FIELD_EMAIL = "ilya,unisov@gmail.com";
+    public static final String FIELD_NAME = "Ilya Unisov";
+    public static final String FIELD_GITHUB = "https://github.com/HoodseyBishop";
+    public static final String FIELD_EMAIL = "ilya.unisov@gmail.com";
 
     public static void main(String[] args) throws Exception {
         HttpResponse<JsonNode> r =  Unirest.post(URL)
