@@ -6,9 +6,9 @@ import ru.track.io.vendor.Bootstrapper;
 import ru.track.io.vendor.FileEncoder;
 import ru.track.io.vendor.ReferenceTaskImplementation;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.net.InetSocketAddress;
+import java.util.Arrays;
 
 public final class TaskImplementation implements FileEncoder {
 
@@ -21,7 +21,31 @@ public final class TaskImplementation implements FileEncoder {
     @NotNull
     public File encodeFile(@NotNull String finPath, @Nullable String foutPath) throws IOException {
         /* XXX: https://docs.oracle.com/javase/8/docs/api/java/io/File.html#deleteOnExit-- */
-        throw new UnsupportedOperationException(); // TODO: implement
+        File inputFile = new File(finPath);
+        File outputFile;
+        if (foutPath != null) {
+            outputFile = new File(foutPath);
+        } else {
+            outputFile = File.createTempFile("base64", ".txt");
+            outputFile.deleteOnExit();
+        }
+        try (InputStream inputStream = new FileInputStream(inputFile); FileWriter fileWriter = new FileWriter(outputFile)){
+            byte[] data = new byte[3];
+            int count = 0;
+            while((count = inputStream.read(data, 0, 3)) != -1) {
+                int binaryForm = 0;
+                for (int i = 0; i < count; i++) {
+                    binaryForm += (data[i] & 0b11111111) << ((2 - i) * 8);
+                }
+                for (int i = 0; i < count + 1; i++) {
+                    int index = (binaryForm >> (3 - i) * 6) & 0b111111;
+                    fileWriter.write(toBase64[index]);
+                }
+                if (count == 1) fileWriter.write("==");
+                if (count == 2) fileWriter.write('=');
+            }
+        }
+        return outputFile;
     }
 
     private static final char[] toBase64 = {
@@ -33,7 +57,7 @@ public final class TaskImplementation implements FileEncoder {
     };
 
     public static void main(String[] args) throws Exception {
-        final FileEncoder encoder = new ReferenceTaskImplementation();
+        final FileEncoder encoder = new TaskImplementation();
         // NOTE: open http://localhost:9000/ in your web browser
         (new Bootstrapper(args, encoder))
                 .bootstrap("", new InetSocketAddress("127.0.0.1", 9000));
