@@ -27,7 +27,6 @@ public abstract class List {
      */
     abstract int remove(int idx) throws NoSuchElementException;
 
-
     /**
      * Получить элемент с позиции idx, бросить исключение, если позиция невалидная
      */

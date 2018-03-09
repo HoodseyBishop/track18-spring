@@ -14,8 +14,7 @@ public class MyLinkedList extends List {
      * <p>
      * static - позволяет использовать Node без создания экземпляра внешнего класса
      */
-
-
+    
     private static class Node {
         Node prev;
         Node next;

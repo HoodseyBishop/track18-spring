@@ -9,6 +9,7 @@ import java.util.NoSuchElementException;
  * - без аргументов - создает внутренний массив дефолтного размера на ваш выбор
  * - с аргументом - начальный размер массива
  */
+
 public class MyArrayList extends List {
     private final int INIT_SIZE = 4;
     private int[] array;
