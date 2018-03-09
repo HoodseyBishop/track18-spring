@@ -14,6 +14,7 @@ public abstract class List {
     /**
      * Добавить элемент в конец списка
      */
+    protected int size = 0;
     abstract void add(int item);
 
     /**
@@ -35,7 +36,9 @@ public abstract class List {
     /**
      * Кол-во элементов списка
      */
-    abstract int size();
+    int size() {
+        return size;
+    };
 
 
 }

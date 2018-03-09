@@ -14,6 +14,8 @@ public class MyLinkedList extends List {
      * <p>
      * static - позволяет использовать Node без создания экземпляра внешнего класса
      */
+
+
     private static class Node {
         Node prev;
         Node next;
@@ -26,22 +28,47 @@ public class MyLinkedList extends List {
         }
     }
 
+    private Node head;
+    private Node tail;
+
     @Override
     void add(int item) {
+        if (head == null) {
+            head = new Node(null, null, item);
+            tail = head;
+            size++;
+        } else {
+            tail.next = new Node(tail, null, item);
+            tail = tail.next;
+            size++;
+        }
     }
 
     @Override
     int remove(int idx) throws NoSuchElementException {
-        return 0;
+        if (idx < 0 || idx > size || size == 0)
+            throw new NoSuchElementException();
+        Node counter = head;
+        while (idx != 0) {
+            counter = counter.next;
+            idx--;
+        }
+        int value = counter.val;
+        if (counter.next != null) counter.next.prev = counter.prev;
+        if (counter.prev != null) counter.prev.next = counter.next;
+        size--;
+        return value;
     }
 
     @Override
     int get(int idx) throws NoSuchElementException {
-        return 0;
-    }
-
-    @Override
-    int size() {
-        return 0;
+        if (idx < 0 || idx > size || size == 0)
+            throw new NoSuchElementException();
+        Node counter = head;
+        while (idx != 0) {
+            counter = counter.next;
+            idx--;
+        }
+        return counter.val;
     }
 }
